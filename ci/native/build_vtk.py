@@ -55,7 +55,7 @@ run([sys.executable,'-m','venv',work/'test-venv'])
 py=work/'test-venv/Scripts/python.exe'
 run([py,'-m','pip','install',next((out/'wheels').glob('*.whl')),'pyvista==0.48.4','pytest','pytest-timeout'])
 run([py,'-m','pytest',root/'ci/native/test_vtk_oracles.py','-v','--timeout=180',f'--junitxml={out/"downstream.xml"}'])
-for name in ['TestPointInPolygon.py','TestBoxPlaneIntersection.py','TestBoxSphereIntersection.py']:
+for name in ['TestPointInPolygon.py','TestTemplates.py','TestBoxSphereIntersection.py']:
     run([py,source/'Common/DataModel/Testing/Python'/name])
 run([py,'-m','pip','freeze'])
 (out/'CPU-PASS').write_text('Native wheel, PE/RECORD, PyVista geometry/volume/intersections and selected upstream VTK tests passed. No GPU/render claim.\n')

@@ -1,0 +1,28 @@
+name: Native ARM64 VTK 9.6.2 downstream geometry
+on:
+  push:
+    branches: [ci/native-arm64-9.6.2-geometry]
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: windows-11-arm
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          architecture: arm64
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: arm64
+      - name: Build GitLab source and exercise PyVista geometry and backend
+        run: python ci/native/build_vtk.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vtk-9.6.2-cp312-win-arm64
+          path: ${{ github.workspace }}/evidence
+          if-no-files-found: error
+          retention-days: 14

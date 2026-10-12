@@ -1,7 +1,7 @@
 name: Native ARM64 VTK 9.6.2 downstream geometry
 on:
   push:
-    branches: [ci/native-arm64-9.6.2-geometry]
+    branches: [ci/native-arm64-9.6.2-packaging-r3]
 permissions:
   contents: read
 jobs:
@@ -19,6 +19,9 @@ jobs:
           arch: arm64
       - name: Build GitLab source and exercise PyVista geometry and backend
         run: python ci/native/build_vtk.py
+      - name: Retain runtime DLLs and symbols even after a failure
+        if: always()
+        run: python ci/native/retain_runtime.py "$env:RUNNER_TEMP/geometry-vtk/build" evidence
       - uses: actions/upload-artifact@v4
         if: always()
         with:
